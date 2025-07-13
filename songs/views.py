@@ -30,7 +30,7 @@ from django.db.models import F
 # Create your views here.
 # all song crud part
 class songs_views(generics.ListCreateAPIView):
-    queryset=Songs.objects.all()
+    queryset=Songs.objects.prefetch_related('artists','genre')
     serializer_class=songsSerilaizer
 
 class songs_edit_view(generics.RetrieveUpdateDestroyAPIView):
@@ -50,30 +50,27 @@ class artist_views(generics.ListCreateAPIView):
     serializer_class=artistSerializer
 
 class album_views(generics.ListCreateAPIView):
-    queryset=Album.objects.all()
+    queryset=Album.objects.prefetch_related(
+        "songs__artists",
+        "songs__genre",
+        # "artist",
+        
+    ).all()
     serializer_class=albumSerializer
 
 class playlist_views(generics.ListCreateAPIView):
-    queryset=Playlist.objects.all()
-    serializer_class=playlistSerializer
+    queryset=Playlist.objects.select_related("user").prefetch_related("songs__artists","songs__genre")
+    serializer_class=playlistsSerializer
 
 
 class history_views(generics.ListCreateAPIView):
-    queryset=History.objects.all()
+    queryset=History.objects.select_related("user","song")
     serializer_class=user_historySerializer
 
+class history_viewss(generics.RetrieveUpdateDestroyAPIView):
+    queryset=History.objects.select_related('song','user').all()
+    serializer_class=user_historySerializer
 
-class calcuate_user_playback(APIView):
-    permission_classes = [AllowAny]  # ensure user is logged in
-    
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# from datetime import timedelta
-
-# from .models import Playback, Songs
-# from User_Accounts.models import UserProfile
-# from .serializers import user_playbackSerializer
 
 class calcuate_user_playback(APIView):
 
@@ -110,7 +107,7 @@ class calcuate_user_playback(APIView):
 
 
     def get(self,request):
-        queryset=Playback.objects.all()
+        queryset=Playback.objects.select_related("user","song")
         serializer=user_playbackSerializer(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
@@ -147,17 +144,105 @@ class queue_views(APIView):
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     
     def get(self,request):
-        queryset=Queue.objects.filter(position__gte=7)
+        queryset=Queue.objects.select_related("user","song").order_by('position')
         serializer=queueSerializer(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class demo_queaue(APIView):
+    def post(self,request):
+        user=request.data.get('user_id')
+        # next_songs=request.data.get('next_songs')
+        current_songs=request.data.get('cur_song')
+
+
+        try:
+            users=UserProfile.objects.get(id=user)
+            # next_songss=Songs.objects.get(id=next_songs)
+            current_songss=Songs.objects.get(id=current_songs)
+        
+        except (UserProfile.DoesNotExist,Songs.DoesNotExist):
+            return Response({"message":"the error found in the song,user"})
+        
+        try:
+            nextt=Queue.objects.get(user=users,song=current_songss)
+            
+        except Queue.DoesNotExist:
+            return Response({"message":"the error fosgjgund in the song,user"})
+        
+
+        current_position=nextt.position
+
+        # Queue.objects.filter(user=user,position__gt=current_position).update(position=F('position')+1)
+        querysets=Queue.objects.filter(user=user,position__gt=current_position)
+
+        for obj in querysets:
+            obj.position+=1
+            obj.save()
+
+
+
+        # queue_item,created=Queue.objects.get_or_create(
+        #     user=user,
+        #     song=next_songss,
+        #     defaults={'position': current_position + 1}
+        # )
+
+        # if not created:
+        #     # If already in queue, just update its position
+        #     queue_item.position = current_position + 1
+        #     queue_item.save()
+
+        serializer = queueSerializer(querysets,many=True)
+        return Response(serializer.data,201)
+    
+
+class demo_queue(APIView):
+    def post(self, request):
+        user_id = request.data.get("user_id")
+        next_song_id = request.data.get("song_id")  # Song to play next
+        current_song_id = request.data.get("current_song_id")  # Currently playing song
+
+        try:
+            user = UserProfile.objects.get(id=user_id)
+            next_song = Songs.objects.get(id=next_song_id)
+            current_song = Songs.objects.get(id=current_song_id)
+        except (UserProfile.DoesNotExist, Songs.DoesNotExist):
+            return Response({"error": "User or song not found"}, status=404)
+
+        try:
+            current_queue_item = Queue.objects.get(user=user, song=current_song)
+        except Queue.DoesNotExist:
+            return Response({"error": "Current song not in queue"}, status=404)
+        
+
+        current_position = current_queue_item.position
+
+        # Step 1: Shift all songs after current_position by +1
+        Queue.objects.filter(user=user, position__gt=current_position).update(position=F('position') + 1)
+
+        # Step 2: Insert new song at position current_position + 1
+        queue_item, created = Queue.objects.get_or_create(
+            user=user,
+            song=next_song,
+            defaults={'position': current_position + 1}
+        )
+
+        if not created:
+            # If already in queue, just update its position
+            queue_item.position = current_position + 1
+            queue_item.save()
+
+        return Response({"message": "Song scheduled to play next"}, status=201)
+
     
 # like full crud part
 class like_views(generics.ListCreateAPIView):
-    queryset=Like.objects.all()
+    queryset=Like.objects.select_related("user","song")
     serializer_class=likeSerializer
 
 class like_viewss(generics.RetrieveUpdateDestroyAPIView):
-    queryset=Like.objects.all()
+    queryset=Like.objects.select_related("user","song")
     serializer_class=likeSerializer
 
 class user_add_like(APIView):
@@ -211,10 +296,5 @@ class user_remove_like(APIView):
                 song.save()
 
         return Response({'message': 'Song dislike'}, status=200)
-        
-        
 
 
-        
-
-            

@@ -49,7 +49,7 @@ class albumSerializer(serializers.ModelSerializer):
     songs=songsSerilaizer(many=True,read_only=True)
     
     song_id=serializers.PrimaryKeyRelatedField(
-        queryset=Artist.objects.all(),
+        queryset=Songs.objects.all(),
         many=True,
         write_only=True,
         source='songs'
@@ -77,6 +77,25 @@ class playlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
         fields=["songs","playlist_name","description","created_at","song_id"]
+
+
+class playlistsSerializer(serializers.ModelSerializer):
+    user=user_data_only(read_only=True)
+    songs=songsSerilaizer(many=True,read_only=True)
+    user_id=serializers.PrimaryKeyRelatedField(
+        queryset=UserProfile.objects.all(),
+        write_only=True,
+        source='user'
+    )
+    song_id=serializers.PrimaryKeyRelatedField(
+        queryset=Songs.objects.all(),
+        many=True,
+        write_only=True,
+        source='songs'
+    )
+    class Meta:
+        model = Playlist
+        fields=["user","songs","playlist_name","description","created_at","song_id","user_id"]
 
 
 class user_historySerializer(serializers.ModelSerializer):
@@ -129,9 +148,6 @@ class likeSerializer(serializers.ModelSerializer):
     class Meta:
         model=Like
         fields='__all__'
-
-
-
 
 
 

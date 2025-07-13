@@ -27,3 +27,19 @@ class user_post_get(generics.ListCreateAPIView):
     serializer_class=User_accountSerializer
 
 
+# class userlikedsongviewwithoutprefetch(APIView):
+
+#     def get(self,request,user_id):
+#         try:
+#             userss = UserProfile.objects.get(id=user_id)
+#             serializer=userlikedSerializer(userss)
+#             return Response(serializer.data,200)
+#         except UserProfile.DoesNotExist:
+#             return Response({"error":"user not found"},404)
+        
+
+# class userlikesongviewswithprefetch(APIView):
+#     def get(self,request,user_id):
+#         userss=UserProfile.objects.prefetch_related("liked_songs__genre").get(id=user_id)
+#         serializer=userlikedSerializer(userss)
+#         return Response(serializer.data,200)

@@ -55,7 +55,7 @@ class Songs(models.Model):
 
 
 class Album(models.Model):
-    artist=models.ManyToManyField(Artist,related_name="album_aritist")
+    # artist=models.ManyToManyField(Artist,related_name="album_aritist")
     songs=models.ManyToManyField(Songs,related_name="album_songs")
     title=models.CharField(max_length=20)
     cover_image=models.FileField(upload_to='album_image/')
@@ -116,6 +116,8 @@ class Queue(models.Model):
 
     def __int__(self):
         return self.song.id
+    class Meta:
+        unique_together=('user','song')
     
 class Like(models.Model):
     user=models.ForeignKey(UserProfile,related_name="like_user",on_delete=models.CASCADE)
@@ -127,22 +129,6 @@ class Like(models.Model):
     
     class Meta:
         unique_together = ('user', 'song')
-
-    
-
-
-
-
-
-    
-
-
-
-        
-
-
-
-
 
 
 

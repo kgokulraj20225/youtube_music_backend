@@ -1,5 +1,8 @@
 from rest_framework import serializers
+
+
 from .models import UserProfile
+
 
 def get_playlist_serializer():
     from songs.serializers import playlistSerializer
@@ -31,3 +34,15 @@ class user_data_only(serializers.ModelSerializer):
     class Meta:
         model=UserProfile
         fields='__all__'
+
+class userlikedSerializer(serializers.ModelSerializer):
+    liked_songs=serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user_name', 'liked_songs']
+
+    def get_liked_songs(Self,obj):
+        from songs.serializers import songsSerilaizer
+        return songsSerilaizer(obj.liked_songs.all(),many=True).data
+
