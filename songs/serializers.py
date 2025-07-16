@@ -149,6 +149,13 @@ class likeSerializer(serializers.ModelSerializer):
         model=Like
         fields='__all__'
 
+class blocked_songsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Block_songs
+        fields='__all__'
+
+    
+
 
 
 

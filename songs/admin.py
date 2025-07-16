@@ -28,5 +28,6 @@ admin.site.register(Playback)
 admin.site.register(Queue)
 admin.site.register(Genre)
 admin.site.register(Like)
+admin.site.register(Block_songs)
 
 

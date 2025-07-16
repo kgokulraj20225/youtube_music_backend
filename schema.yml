@@ -1,0 +1,1235 @@
+openapi: 3.0.3
+info:
+  title: youtube music
+  version: 1.0.0
+  description: music healing everythink
+paths:
+  /account/user_account/:
+    get:
+      operationId: account_user_account_list
+      tags:
+      - account
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_account'
+          description: ''
+    post:
+      operationId: account_user_account_create
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_account'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User_account'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User_account'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_account'
+          description: ''
+  /songs/album_views/:
+    get:
+      operationId: songs_album_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/album'
+          description: ''
+    post:
+      operationId: songs_album_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/album'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/album'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/album'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/album'
+          description: ''
+  /songs/artist_views/:
+    get:
+      operationId: songs_artist_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/artist'
+          description: ''
+    post:
+      operationId: songs_artist_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/artist'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/artist'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/artist'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/artist'
+          description: ''
+  /songs/calcuate_user_playback/:
+    get:
+      operationId: songs_calcuate_user_playback_retrieve
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: songs_calcuate_user_playback_create
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /songs/demo_queue/:
+    post:
+      operationId: songs_demo_queue_create
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /songs/genre_views/:
+    get:
+      operationId: songs_genre_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/genre'
+          description: ''
+    post:
+      operationId: songs_genre_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/genre'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/genre'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/genre'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genre'
+          description: ''
+  /songs/genre_views/{id}/:
+    get:
+      operationId: songs_genre_views_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genre'
+          description: ''
+    put:
+      operationId: songs_genre_views_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/genre'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/genre'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/genre'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genre'
+          description: ''
+    delete:
+      operationId: songs_genre_views_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /songs/history_views/:
+    get:
+      operationId: songs_history_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user_history'
+          description: ''
+    post:
+      operationId: songs_history_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_history'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/user_history'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/user_history'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_history'
+          description: ''
+  /songs/history_viewss/{id}/:
+    get:
+      operationId: songs_history_viewss_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_history'
+          description: ''
+    put:
+      operationId: songs_history_viewss_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_history'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/user_history'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/user_history'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_history'
+          description: ''
+    patch:
+      operationId: songs_history_viewss_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patcheduser_history'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patcheduser_history'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patcheduser_history'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_history'
+          description: ''
+    delete:
+      operationId: songs_history_viewss_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /songs/like_views/:
+    get:
+      operationId: songs_like_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/like'
+          description: ''
+    post:
+      operationId: songs_like_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/like'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/like'
+          description: ''
+  /songs/like_viewss/{id}/:
+    get:
+      operationId: songs_like_viewss_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/like'
+          description: ''
+    put:
+      operationId: songs_like_viewss_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/like'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/like'
+          description: ''
+    patch:
+      operationId: songs_like_viewss_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patchedlike'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patchedlike'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patchedlike'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/like'
+          description: ''
+    delete:
+      operationId: songs_like_viewss_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /songs/playlist_views/:
+    get:
+      operationId: songs_playlist_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/playlists'
+          description: ''
+    post:
+      operationId: songs_playlist_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/playlists'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/playlists'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/playlists'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/playlists'
+          description: ''
+  /songs/queue_views/:
+    get:
+      operationId: songs_queue_views_retrieve
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: songs_queue_views_create
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /songs/songs_edit_view/{id}/:
+    get:
+      operationId: songs_songs_edit_view_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/songsSerilaizer'
+          description: ''
+    put:
+      operationId: songs_songs_edit_view_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/songsSerilaizer'
+          description: ''
+    patch:
+      operationId: songs_songs_edit_view_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedsongsSerilaizer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedsongsSerilaizer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedsongsSerilaizer'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/songsSerilaizer'
+          description: ''
+    delete:
+      operationId: songs_songs_edit_view_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /songs/songs_views/:
+    get:
+      operationId: songs_songs_views_list
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/songsSerilaizer'
+          description: ''
+    post:
+      operationId: songs_songs_views_create
+      tags:
+      - songs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/songsSerilaizer'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/songsSerilaizer'
+          description: ''
+  /songs/user_add_like/:
+    post:
+      operationId: songs_user_add_like_create
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /songs/user_remove_like/:
+    post:
+      operationId: songs_user_remove_like_create
+      tags:
+      - songs
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Patchedlike:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        song:
+          allOf:
+          - $ref: '#/components/schemas/songss'
+          readOnly: true
+        song_id:
+          type: integer
+          writeOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/user_only'
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        like_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedsongsSerilaizer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/artist'
+          readOnly: true
+        artist_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        genre:
+          type: array
+          items:
+            $ref: '#/components/schemas/genre'
+          readOnly: true
+        genre_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        title:
+          type: string
+          maxLength: 40
+        duration:
+          type: string
+          nullable: true
+        release_date:
+          type: string
+          format: date-time
+          nullable: true
+        songs:
+          type: string
+          format: uri
+          pattern: (?:mp3)$
+        cover_image:
+          type: string
+          format: uri
+        lyrics:
+          type: string
+        language:
+          type: string
+          maxLength: 20
+        views:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+          nullable: true
+        likes_count:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+          nullable: true
+    Patcheduser_history:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        song:
+          allOf:
+          - $ref: '#/components/schemas/songss'
+          readOnly: true
+        song_id:
+          type: integer
+          writeOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/user_only'
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        played_at:
+          type: string
+          format: date-time
+          readOnly: true
+    User_account:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        playlist_user:
+          type: string
+          readOnly: true
+        user_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        gmail:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 10
+        photo_url:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - gmail
+      - id
+      - playlist_user
+    album:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/songsSerilaizer'
+          readOnly: true
+        song_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        title:
+          type: string
+          maxLength: 20
+        cover_image:
+          type: string
+          format: uri
+        description:
+          type: string
+      required:
+      - cover_image
+      - id
+      - song_id
+      - songs
+      - title
+    artist:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        artiest_name:
+          type: string
+          maxLength: 20
+        artist_bio:
+          type: string
+        artist_image:
+          type: string
+          format: uri
+        country:
+          type: string
+          maxLength: 30
+      required:
+      - artiest_name
+      - id
+    genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        genre:
+          type: string
+          maxLength: 40
+        description:
+          type: string
+      required:
+      - description
+      - id
+    like:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        song:
+          allOf:
+          - $ref: '#/components/schemas/songss'
+          readOnly: true
+        song_id:
+          type: integer
+          writeOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/user_only'
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        like_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - like_at
+      - song
+      - song_id
+      - user
+      - user_id
+    playlists:
+      type: object
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/user_data_only'
+          readOnly: true
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/songsSerilaizer'
+          readOnly: true
+        playlist_name:
+          type: string
+          maxLength: 30
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        song_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+      required:
+      - created_at
+      - playlist_name
+      - song_id
+      - songs
+      - user
+      - user_id
+    songsSerilaizer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/artist'
+          readOnly: true
+        artist_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        genre:
+          type: array
+          items:
+            $ref: '#/components/schemas/genre'
+          readOnly: true
+        genre_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        title:
+          type: string
+          maxLength: 40
+        duration:
+          type: string
+          nullable: true
+        release_date:
+          type: string
+          format: date-time
+          nullable: true
+        songs:
+          type: string
+          format: uri
+          pattern: (?:mp3)$
+        cover_image:
+          type: string
+          format: uri
+        lyrics:
+          type: string
+        language:
+          type: string
+          maxLength: 20
+        views:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+          nullable: true
+        likes_count:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+          nullable: true
+      required:
+      - artist_id
+      - artists
+      - cover_image
+      - genre
+      - genre_id
+      - id
+      - language
+      - songs
+      - title
+    songss:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 40
+        id:
+          type: integer
+          readOnly: true
+        cover_image:
+          type: string
+          format: uri
+      required:
+      - cover_image
+      - id
+      - title
+    user_data_only:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        gmail:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 10
+        photo_url:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - gmail
+      - id
+    user_history:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        song:
+          allOf:
+          - $ref: '#/components/schemas/songss'
+          readOnly: true
+        song_id:
+          type: integer
+          writeOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/user_only'
+          readOnly: true
+        user_id:
+          type: integer
+          writeOnly: true
+        played_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - played_at
+      - song
+      - song_id
+      - user
+      - user_id
+    user_only:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        gmail:
+          type: string
+          format: email
+          maxLength: 254
+      required:
+      - gmail
+      - id
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

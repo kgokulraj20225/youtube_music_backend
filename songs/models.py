@@ -131,6 +131,21 @@ class Like(models.Model):
         unique_together = ('user', 'song')
 
 
+# block particular songs
+
+class Block_songs(models.Model):
+    user=models.ForeignKey(UserProfile,related_name="block_song_user",on_delete=models.CASCADE)
+    song=models.ForeignKey(Songs,related_name='block_songs_song',on_delete=models.CASCADE)
+    blocked_time=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.user_name},{self.song.title}"
+    
+    class Meta:
+        unique_together=['user','song']
+
+
+
 
 
     

@@ -25,6 +25,7 @@ from datetime import timedelta
 from .models import Songs,Playback
 from django.db.models import Max
 from django.db.models import F
+from .filters import *
 
 
 # Create your views here.
@@ -288,7 +289,7 @@ class user_remove_like(APIView):
             return Response({"message":"user not found"})
         
         like=Like.objects.filter(user=user,song=song)
-         
+
         if like.exists():
             like.delete()
             if song.likes_count>0:
@@ -298,3 +299,81 @@ class user_remove_like(APIView):
         return Response({'message': 'Song dislike'}, status=200)
 
 
+class user_individual_history(generics.ListAPIView):
+    serializer_class=user_historySerializer
+
+    def get_queryset(self):
+        song =2
+        user=1
+        return History.objects.filter(song=song,user=user).select_related('user', 'song')
+    
+
+    
+class get_genre_songs(APIView):
+
+    def get(self,request):
+        genres=request.query_params.get('genre')
+
+        if not genres:
+            return Response({"error":"not genre"})
+        
+        songs=Songs.objects.filter(genre=genres)
+        serializer=songsSerilaizer(songs,many=True)
+        return Response(serializer.data,200)
+
+
+class get_artist_songs(generics.ListAPIView):
+    queryset=Songs.objects.prefetch_related('artists')
+    serializer_class =songsSerilaizer
+    filterset_class=artist
+
+class blocked_songs(APIView):
+    def post(self,request):
+        song_id=request.data.get('song_id')
+        user_id=request.data.get('user_id')
+
+        if Block_songs.objects.filter(user=user_id,song=song_id).exists():
+            return Response({"message":"this songs already blocked"},200)
+        
+        try:
+            song=Songs.objects.get(id=song_id)
+            user=UserProfile.objects.get(id=user_id)
+            Block_songs.objects.get_or_create(user=user,song=song)
+            return Response({"message":"the songs blocked successfully"})
+        except UserProfile.DoesNotExist and Songs.DoesNotExist:
+            return Response({"message":"the user and songs not found"})
+        
+    def get(self,request):
+        blockedsong=Block_songs.objects.filter(user=1)
+        serializer=blocked_songsSerializer(blockedsong,many=True)
+        return Response(serializer.data,200)
+    
+class unblock_songs(APIView):
+    def post(self,request):
+        user_id=request.data.get("user_id")
+        song_id=request.data.get("song_id")
+
+        try:
+            user=UserProfile.objects.get(id=user_id)
+            song=Songs.objects.get(id=song_id)
+        except Songs.DoesNotExist:
+            return Response({"error":"the song found"},400)
+        except UserProfile.DoesNotExist:
+            return Response({"error":"the user found"},400)
+        
+        unblock=Block_songs.objects.filter(user=user,song=song)
+
+        if unblock.exists():
+            unblock.delete()
+            return Response({"message":"this song unblock successfully"},200)
+        else:
+            return Response({"message":"this song not blocked"},400)
+
+class get_song_without_block(APIView):
+    def get(self,request):
+        blockeds_song=Block_songs.objects.filter(user=1).values_list("song",flat=True)
+        songs=Songs.objects.exclude(id__in=blockeds_song)
+        serializer=songssSerializer(songs,many=True)
+        return Response(serializer.data,200)
+    
+ 

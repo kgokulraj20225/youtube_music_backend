@@ -1,7 +1,12 @@
 from django.urls import path,include
 from .views import *
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns=[
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('songs_views/',songs_views.as_view()),
     path('songs_edit_view/<int:pk>/',songs_edit_view.as_view()),
     path('artist_views/',artist_views.as_view()),
@@ -18,5 +23,10 @@ urlpatterns=[
     path("user_add_like/",user_add_like.as_view()),
     path("user_remove_like/",user_remove_like.as_view()),
     path("demo_queue/",demo_queue.as_view()),
-    
+    path("user_individual_history/",user_individual_history.as_view()),
+    path("get_genre_songs/",get_genre_songs.as_view()),
+    path("get_artist_songs/",get_artist_songs.as_view()),
+    path("blocked_songs/",blocked_songs.as_view()),
+    path("unblock_songs/",unblock_songs.as_view()),
+    path("get_song_with_block/",get_song_without_block.as_view()),
 ]

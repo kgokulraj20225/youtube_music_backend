@@ -18,13 +18,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from django.views.generic import ListView
+from django.views.generic import ListView 
+from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 
 
 class user_post_get(generics.ListCreateAPIView):
     queryset=UserProfile.objects.all()
     serializer_class=User_accountSerializer
+    # filter_backends = [DjangoFilterBackend]
+    filterset_fields=['user_name']
 
 
 # class userlikedsongviewwithoutprefetch(APIView):
