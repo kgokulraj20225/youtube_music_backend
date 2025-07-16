@@ -20,6 +20,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.views.generic import ListView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import pagination
+from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination
+from rest_framework import filters
 from django.utils import timezone
 from datetime import timedelta
 from .models import Songs,Playback
@@ -31,8 +35,20 @@ from .filters import *
 # Create your views here.
 # all song crud part
 class songs_views(generics.ListCreateAPIView):
-    queryset=Songs.objects.prefetch_related('artists','genre')
+    queryset=Songs.objects.prefetch_related('artists','genre').order_by('pk')
     serializer_class=songsSerilaizer
+    filter_backends=[DjangoFilterBackend,
+                     filters.SearchFilter,
+                     filters.OrderingFilter
+                     ]
+    search_fields=['title','=artists__artiest_name','=genre__genre']
+    ordering_fields=('title','id')
+    filterset_class=artist
+    pagination_class=PageNumberPagination
+    pagination_class.page_size=6
+    pagination_class.page_size_query_param='size'
+    pagination_class.max_page_size=4
+
 
 class songs_edit_view(generics.RetrieveUpdateDestroyAPIView):
     queryset=Songs.objects.all()
