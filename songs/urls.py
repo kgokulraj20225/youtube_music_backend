@@ -29,4 +29,5 @@ urlpatterns=[
     path("blocked_songs/",blocked_songs.as_view()),
     path("unblock_songs/",unblock_songs.as_view()),
     path("get_song_with_block/",get_song_without_block.as_view()),
+    path("song_view_count/",song_view_count.as_view()),
 ]

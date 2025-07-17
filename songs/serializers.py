@@ -45,6 +45,12 @@ class user_only(serializers.ModelSerializer):
         model=UserProfile
         fields=['id','user_name','gmail']
 
+class song_playSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Song_play
+        fields="__all__"
+        
+
 class albumSerializer(serializers.ModelSerializer):
     songs=songsSerilaizer(many=True,read_only=True)
     

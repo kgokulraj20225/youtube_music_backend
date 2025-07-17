@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     photo_url = models.ImageField(upload_to='user_photo/',blank=True,null=True)
 
 
-    
+   
 
     def __str__(self):
         return self.user_name

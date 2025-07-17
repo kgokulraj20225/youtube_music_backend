@@ -11,12 +11,12 @@ from rest_framework.views import APIView # type: ignore
 from rest_framework.response import Response
 from django.http import HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication,SessionAuthentication
 from rest_framework import status,generics,viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import *
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.views.generic import ListView
@@ -35,6 +35,9 @@ from .filters import *
 # Create your views here.
 # all song crud part
 class songs_views(generics.ListCreateAPIView):
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[SessionAuthentication]
+
     queryset=Songs.objects.prefetch_related('artists','genre').order_by('pk')
     serializer_class=songsSerilaizer
     filter_backends=[DjangoFilterBackend,
@@ -50,9 +53,69 @@ class songs_views(generics.ListCreateAPIView):
     pagination_class.max_page_size=4
 
 
+
 class songs_edit_view(generics.RetrieveUpdateDestroyAPIView):
     queryset=Songs.objects.all()
     serializer_class=songsSerilaizer
+
+
+# song_play count all code
+
+class song_views(APIView):
+    def post(self,request):
+        songs_id=request.data.get('song_id')
+
+        try:
+            song=Songs.objects.get(id=songs_id)
+        except Songs.DoesNotExist:
+            return Response({"err":"the song not found"})
+        
+        if song:
+            song.views+=1
+            song.save()
+            return Response({"message":"views count increase successfully"})
+
+class song_view_count(APIView):
+    def post(self,request):
+        user_id=request.data.get("user_id")
+        song_id=request.data.get("song_id")
+
+        try:
+            user=UserProfile.objects.get(id=user_id)
+            song=Songs.objects.get(id=song_id)
+        except UserProfile.DoesNotExist and Songs.DoesNotExist:
+            return Response({"err":"the user or song not found"})
+        
+        one_minute=timezone.now()-timedelta(minutes=1)
+
+        song_play=Song_play.objects.filter(
+            user=user,
+            song=song,
+            play_at__gte=one_minute
+        ).exists()
+        if song_play:
+            return Response({"message":"the views add already"})
+        
+        Song_play.objects.create(user=user,song=song)
+
+        if song.views is None:
+            song.views=0
+
+
+        song.views =song.views+1
+        song.save()
+        return Response({"message":"views add successfully"},200)
+
+    
+
+    
+    def get(self,request):
+        song=Song_play.objects.all()
+        serializer=song_playSerializer(song,many=True)
+        return Response(serializer.data,200)
+
+
+
 
 # all genre crud part
 
@@ -315,7 +378,13 @@ class user_remove_like(APIView):
         return Response({'message': 'Song dislike'}, status=200)
 
 
+        
+
+
+
 class user_individual_history(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[SessionAuthentication]
     serializer_class=user_historySerializer
 
     def get_queryset(self):
@@ -323,6 +392,14 @@ class user_individual_history(generics.ListAPIView):
         user=1
         return History.objects.filter(song=song,user=user).select_related('user', 'song')
     
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     try:
+    #         user_profile = UserProfile.objects.get(user=user)
+    #     except UserProfile.DoesNotExist:
+    #         return History.objects.none()  # or raise an appropriate exception
+    #     return History.objects.filter(user=user_profile).select_related('user', 'song')
+
 
     
 class get_genre_songs(APIView):
@@ -391,5 +468,7 @@ class get_song_without_block(APIView):
         songs=Songs.objects.exclude(id__in=blockeds_song)
         serializer=songssSerializer(songs,many=True)
         return Response(serializer.data,200)
+    
+
     
  

@@ -41,7 +41,7 @@ class Songs(models.Model):
     cover_image=models.ImageField(upload_to='songs_img/')
     lyrics=models.TextField(blank=True)
     language=models.CharField(max_length=20)
-    views=models.PositiveBigIntegerField(blank=True,null=True)
+    views=models.PositiveBigIntegerField(blank=True,null=True,default=0)
     likes_count=models.PositiveBigIntegerField(blank=True,null=True)
 
     def __str__(self):
@@ -52,6 +52,18 @@ class Songs(models.Model):
             audio = MP3(self.songs)
             self.duration = timedelta(seconds=int(audio.info.length))
         super().save(*args, **kwargs)
+
+
+class Song_play(models.Model):
+    user=models.ForeignKey(UserProfile,related_name="song_play_user",on_delete=models.CASCADE)
+    song=models.ForeignKey(Songs,related_name='song_play_song',on_delete=models.CASCADE)
+    play_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.user_name,self.song.title
+    
+    # class Meta:
+    #     unique_together=['user','song']
 
 
 class Album(models.Model):
