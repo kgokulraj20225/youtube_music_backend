@@ -9,12 +9,11 @@ def get_playlist_serializer():
     return playlistSerializer
 
 class User_accountSerializer(serializers.ModelSerializer):
-    playlist_user=serializers.SerializerMethodField()
+    playlist_user=serializers.SerializerMethodField()     
     class Meta:
         model = UserProfile
         fields = ['user_name','playlist_user','gmail']
         
-
     def get_playlist_user(self,obj):
         playlistserializer=get_playlist_serializer()
         playlist=obj.playlist_user.all()

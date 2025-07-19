@@ -19,13 +19,19 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from pathlib import Path
 from django.conf import settings
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),  # here
     path('silk/',include('silk.urls',namespace='silk')),
     path('__debug__/',include('debug_toolbar.urls')),
     path('songs/', include('songs.urls')),
     path('account/', include('User_Accounts.urls')),
+    path("api/token/",TokenObtainPairView.as_view()),
+    path("api/token/refresh/",TokenRefreshView.as_view()),
 ]+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

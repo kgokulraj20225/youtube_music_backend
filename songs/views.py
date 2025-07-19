@@ -1,43 +1,39 @@
-from django.shortcuts import render
-from rest_framework import status # type: ignore
-from rest_framework.decorators import api_view
-from rest_framework.response import Response 
-from .models import *
-from User_Accounts.models import UserProfile
-from .serializers import *
-from django.http import Http404, JsonResponse
+from datetime import timedelta
+
+from django.db.models import F, Max, Q
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.views import APIView # type: ignore
-from rest_framework.response import Response
-from django.http import HttpResponse
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication,SessionAuthentication
-from rest_framework import status,generics,viewsets
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import *
-from django.shortcuts import get_object_or_404
-from django.db.models import Q
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import pagination
-from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination
-from rest_framework import filters
-from django.utils import timezone
-from datetime import timedelta
-from .models import Songs,Playback
-from django.db.models import Max
-from django.db.models import F
+from rest_framework import status  # type: ignore
+from rest_framework import filters, generics, pagination, viewsets
+from rest_framework.authentication import (SessionAuthentication,
+                                           TokenAuthentication)
+from rest_framework.decorators import api_view
+from rest_framework.pagination import (LimitOffsetPagination,
+                                       PageNumberPagination)
+from rest_framework.permissions import *
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView  # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from User_Accounts.models import UserProfile
+
 from .filters import *
+from .models import *
+from .models import Playback, Songs
+from .serializers import *
 
 
 # Create your views here.
 # all song crud part
 class songs_views(generics.ListCreateAPIView):
-    permission_classes=[IsAuthenticated]
-    authentication_classes=[SessionAuthentication]
-
+    permission_classes=[DjangoModelPermissions]
+    # authentication_classes=[JWTAuthentication]
+     
     queryset=Songs.objects.prefetch_related('artists','genre').order_by('pk')
     serializer_class=songsSerilaizer
     filter_backends=[DjangoFilterBackend,
@@ -139,6 +135,8 @@ class album_views(generics.ListCreateAPIView):
     serializer_class=albumSerializer
 
 class playlist_views(generics.ListCreateAPIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     queryset=Playlist.objects.select_related("user").prefetch_related("songs__artists","songs__genre")
     serializer_class=playlistsSerializer
 
