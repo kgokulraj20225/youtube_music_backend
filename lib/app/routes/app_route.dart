@@ -52,6 +52,6 @@ class AppRoutes {
     GetPage(name: home_page_using_get, page: ()=>home_auth_user_page(),binding: other_homebinding(),middlewares: [loginguard(),onbindingstartend()]),
     GetPage(name: second_demo_page_get, page: ()=>second_demo_page(),binding: HomeBinding()),
     GetPage(name: premium_page_auths, page: ()=>premium_page_auth(),binding: binding_login_auth(),middlewares: [premiumguard()]),
-    GetPage(name: backend_hand_sample, page: ()=>display_song(),binding: backend_binding()),
+    // GetPage(name: backend_hand_sample, page: ()=>display_song(),binding: backend_bindings()),
   ];
 }

@@ -19,6 +19,7 @@ class songsshowcontroller extends GetxController {
     try {
       isloading(true);
       songsList.value= await _sservice.getSongs();
+      print('song list $songsList');
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {

@@ -587,7 +587,7 @@ class myapp extends StatelessWidget {
       // home: display_song(),
         initialRoute: '/demo',
       getPages: [
-        GetPage(name: '/demo', page: ()=>display_song(),binding: backend_binding()),
+        GetPage(name: '/demo', page: ()=>display_song(),binding: backend_bindingss()),
 
       ]
     );

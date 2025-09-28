@@ -13,12 +13,13 @@ class display_song extends StatefulWidget {
 class _display_songState extends State<display_song> {
   @override
   Widget build(BuildContext context) {
-    final song_controller controller =Get.find();
+    final song_controllers controller =Get.find();
 
     return Scaffold(
       appBar: AppBar(),
       body: Obx((){
         if(controller.isloading.value){
+          print('songs ${controller.songs_name_list}');
           return CircularProgressIndicator();
         }
         // if(controller.songs_name_list.isEmpty){
@@ -31,6 +32,7 @@ class _display_songState extends State<display_song> {
           return ListTile(
             leading:songs.coverImage!=null?Image.network(songs.coverImage!):Text('no image'),
             title: Text('${songs.title ?? 'name'}'),
+            subtitle: songs.genre!.isEmpty && songs.genre==null ? Text('no artist details'):Text(songs.genre!.map((a) => a.genre).join(', ')),
           );
         });
       }),

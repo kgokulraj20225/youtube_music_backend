@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class songService {
-  static const baseUrl = 'http://10.155.7.73:8000/songs/songs_views/';
+  static const baseUrl = 'http://10.189.164.17:8000/songs/songs_views/';
 
   Future<List<Songs>> getSongs() async {
     final response = await http.get(Uri.parse(baseUrl));
